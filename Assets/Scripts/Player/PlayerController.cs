@@ -42,4 +42,10 @@ public class PlayerController : MonoBehaviour
 		this.transform.position += Vector3.forward * speed * Time.deltaTime;
 		speed += speedIncrement * Time.deltaTime;
 	}
+
+	[PunRPC]
+	void GenerateRandom()
+	{
+		Debug.Log(Random.Range(0, 1000));
+	}
 }

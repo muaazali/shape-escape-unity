@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public enum Shape
 {
-	CUBE,
+	CUBE = 0,
 	SPHERE
 }
 
