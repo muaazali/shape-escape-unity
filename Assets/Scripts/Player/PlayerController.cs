@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float speed = 10f;
 	[SerializeField] private float speedIncrement = 1f;
 
+	public Shape currentShape;
 
 	void Awake()
 	{
+		currentShape = Shape.SPHERE;
 		if (!photonView.IsMine)
 		{
 			playerCamera.gameObject.SetActive(false);
