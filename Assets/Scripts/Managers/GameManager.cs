@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -12,6 +14,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	[SerializeField] private List<PhotonView> redStarSets, blueStarSets;
 	[SerializeField] private List<Obstacle> redObstacles, blueObstacles;
+
+	[Header("Game Finished UI")]
+	[SerializeField] public GameObject gameFinishedUI;
+	[SerializeField] public TextMeshProUGUI yourStatus;
+	[SerializeField] public TextMeshProUGUI masterName, otherName;
+	[SerializeField] public TextMeshProUGUI masterScore, otherScore;
 
 	public bool isGameOver = false;
 
@@ -68,6 +76,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 		if (hasFinished && hasOtherPlayedFinished)
 		{
 			isGameOver = true;
+			localPlayer.GetComponent<PhotonView>().RPC("FinishGame", RpcTarget.All, starsCollected, otherPlayerStarsCollected);
 			Debug.Log($"GAME COMPLETE! Master: {starsCollected}, Other: {otherPlayerStarsCollected}");
 		}
 	}

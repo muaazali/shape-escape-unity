@@ -20,7 +20,7 @@ public class Obstacle : MonoBehaviour
 		{
 			if (other.gameObject.GetComponentInParent<PlayerController>().currentShape != requiredShape)
 			{
-				Debug.Log("Game Over.");
+				GameManager.Instance.starsCollected -= 3;
 			}
 		}
 

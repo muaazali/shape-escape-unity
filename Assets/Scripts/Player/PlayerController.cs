@@ -109,18 +109,25 @@ public class PlayerController : MonoBehaviour
 	}
 
 	[PunRPC]
-	void FinishGame(int masterStars, int masterLeft, int otherStars, int otherLeft)
+	void FinishGame(int masterStars, int otherStars)
 	{
-		if (PhotonNetwork.IsMasterClient)
+		isStopped = true;
+		if ((PhotonNetwork.IsMasterClient && masterStars > otherStars) || (!PhotonNetwork.IsMasterClient && masterStars < otherStars))
 		{
-			if (masterLeft == 1)
-			{
-
-			}
+			GameManager.Instance.yourStatus.text = "You Won!";
+		}
+		else if (masterStars == otherStars)
+		{
+			GameManager.Instance.yourStatus.text = "Draw!";
 		}
 		else
 		{
-
+			GameManager.Instance.yourStatus.text = "You Lost!";
 		}
+		GameManager.Instance.masterName.text = PhotonNetwork.CurrentRoom.GetPlayer(0, true).NickName;
+		GameManager.Instance.otherName.text = PhotonNetwork.CurrentRoom.GetPlayer(2).NickName;
+		GameManager.Instance.masterScore.text = masterStars.ToString();
+		GameManager.Instance.otherScore.text = otherStars.ToString();
+		GameManager.Instance.gameFinishedUI.SetActive(true);
 	}
 }
