@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: -6579488376626920836}
   - component: {fileID: 2862984793098598766}
   - component: {fileID: 8562764955943824409}
+  - component: {fileID: -2089118086555568399}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Player
@@ -385,8 +386,9 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: -2089118086555568399}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -404,11 +406,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photonView: {fileID: -6579488376626920836}
   playerCamera: {fileID: 963194227}
+  cubeShape: {fileID: 3998822303132167265}
+  sphereShape: {fileID: 923960526366647944}
+  playerName: {fileID: 838463474802321444}
+  laneSeparation: 3
   redCameraPosition: {fileID: 1583806043}
   blueCameraPosition: {fileID: 1277060176}
   speed: 10
   speedIncrement: 2
+  laneSwitchSpeed: 10
+  isStopped: 0
   currentShape: 0
+  targetXPosition: 0
+  baseXPosition: 0
 --- !u!54 &8562764955943824409
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -425,6 +435,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &-2089118086555568399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749864866302926533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &3998822303132167265
 GameObject:
   m_ObjectHideFlags: 0

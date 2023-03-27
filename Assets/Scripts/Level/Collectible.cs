@@ -16,7 +16,7 @@ public class Collectible : MonoBehaviour
 	{
 		if (other.gameObject.GetComponentInParent<PhotonView>().IsMine)
 		{
-			Debug.Log("PICKED UP STAR!");
+			GameManager.Instance.starsCollected++;
 		}
 		Destroy(this.gameObject);
 	}

@@ -2,28 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
+	[Header("Object References")]
 	[SerializeField] private PhotonView photonView;
 	[SerializeField] private Camera playerCamera;
+	[SerializeField] private GameObject cubeShape, sphereShape;
+	[SerializeField] private TextMeshProUGUI playerName;
 
+	[Header("Positioning")]
+	[SerializeField] private float laneSeparation = 3f;
 	[SerializeField] private Transform redCameraPosition, blueCameraPosition;
 
+	[Header("Speed Config")]
 	[SerializeField] private float speed = 10f;
 	[SerializeField] private float speedIncrement = 1f;
+	[SerializeField] private float laneSwitchSpeed = 10f;
+	[HideInInspector] public bool isStopped = false;
 
-	public Shape currentShape;
+	[HideInInspector] public Shape currentShape = Shape.SPHERE;
+	private int currentLane = 0;
+	public float targetXPosition;
+	public float baseXPosition;
 
 	void Awake()
 	{
-		currentShape = Shape.SPHERE;
+		baseXPosition = targetXPosition = transform.position.x;
 		if (!photonView.IsMine)
 		{
 			playerCamera.gameObject.SetActive(false);
+			if (PhotonNetwork.IsMasterClient)
+				playerName.text = PhotonNetwork.CurrentRoom.GetPlayer(2).NickName;
+			else playerName.text = PhotonNetwork.CurrentRoom.GetPlayer(0, true).NickName;
 		}
 		else
 		{
+			playerName.text = PhotonNetwork.LocalPlayer.NickName;
 			if (PhotonNetwork.IsMasterClient)
 			{
 				playerCamera.transform.position = blueCameraPosition.position;
@@ -39,13 +55,72 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
 	{
-		this.transform.position += Vector3.forward * speed * Time.deltaTime;
-		speed += speedIncrement * Time.deltaTime;
+		if (isStopped) return;
+		if (photonView.IsMine)
+		{
+			this.transform.position += Vector3.forward * speed * Time.deltaTime;
+			speed += speedIncrement * Time.deltaTime;
+
+			HandleInputs();
+			transform.position = Vector3.Lerp(transform.position, new Vector3(targetXPosition, transform.position.y, transform.position.z), Time.deltaTime * laneSwitchSpeed);
+		}
+	}
+
+	void HandleInputs()
+	{
+		if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+		{
+			if (currentLane <= -1) return;
+			currentLane--;
+		}
+		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+		{
+			if (currentLane >= 1) return;
+			currentLane++;
+		}
+		if (currentLane == -1)
+		{
+			targetXPosition = baseXPosition - laneSeparation;
+			currentShape = Shape.CUBE;
+			cubeShape.SetActive(true);
+			sphereShape.SetActive(false);
+		}
+		else if (currentLane == 0)
+		{
+			targetXPosition = baseXPosition;
+			currentShape = Shape.SPHERE;
+			cubeShape.SetActive(false);
+			sphereShape.SetActive(true);
+		}
+		else if (currentLane == 1)
+		{
+			targetXPosition = baseXPosition + laneSeparation;
+			currentShape = Shape.CUBE;
+			cubeShape.SetActive(true);
+			sphereShape.SetActive(false);
+		}
 	}
 
 	[PunRPC]
-	void GenerateRandom()
+	void OtherFinishedGame(int otherStars)
 	{
-		Debug.Log(Random.Range(0, 1000));
+		GameManager.Instance.otherPlayerStarsCollected = otherStars;
+		GameManager.Instance.hasOtherPlayedFinished = true;
+	}
+
+	[PunRPC]
+	void FinishGame(int masterStars, int masterLeft, int otherStars, int otherLeft)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			if (masterLeft == 1)
+			{
+
+			}
+		}
+		else
+		{
+
+		}
 	}
 }

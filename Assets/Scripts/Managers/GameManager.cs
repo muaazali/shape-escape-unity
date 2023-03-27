@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
 	[SerializeField] private GameObject playerPrefab;
 	[SerializeField] private Transform redSpawn, blueSpawn;
@@ -13,11 +13,20 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private List<PhotonView> redStarSets, blueStarSets;
 	[SerializeField] private List<Obstacle> redObstacles, blueObstacles;
 
+	public bool isGameOver = false;
+
+	public bool hasFinished = false;
+	public int starsCollected = 0;
+
+	public bool hasOtherPlayedFinished = false;
+	public int otherPlayerStarsCollected = 0;
+
 	public static GameManager Instance;
 	private GameObject localPlayer;
 
 	void Awake()
 	{
+		Instance = this;
 		Vector3 spawnPosition = PhotonNetwork.IsMasterClient ? blueSpawn.position : redSpawn.position;
 		var spawnedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition, Quaternion.identity, 0);
 		localPlayer = spawnedPlayer;
@@ -52,4 +61,20 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
+
+	void Update()
+	{
+		if (isGameOver) return;
+		if (hasFinished && hasOtherPlayedFinished)
+		{
+			isGameOver = true;
+			Debug.Log($"GAME COMPLETE! Master: {starsCollected}, Other: {otherPlayerStarsCollected}");
+		}
+	}
+
+	public override void OnPlayerLeftRoom(Player otherPlayer)
+	{
+		Debug.Log("OTHER PLAYER LEFT THE ROOM!");
+	}
+
 }
