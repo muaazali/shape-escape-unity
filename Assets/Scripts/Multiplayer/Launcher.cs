@@ -73,6 +73,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			waitingPanel.SetActive(false);
 			Debug.Log("All players connected. Starting game.");
+			SceneManager.LoadScene("GameScene");
 		}
 	}
 
@@ -82,6 +83,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			waitingPanel.SetActive(false);
 			Debug.Log("All players connected. Starting game.");
+			SceneManager.LoadScene("GameScene");
 		}
 	}
 
