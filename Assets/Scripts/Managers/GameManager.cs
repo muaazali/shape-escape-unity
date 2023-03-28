@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 using Photon.Pun;
@@ -59,6 +60,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 			for (int i = 0; i < blueObstacles.Count; i++)
 			{
 				blueObstacles[i].requiredShape = (Shape)Random.Range(0, 2);
+				if (blueObstacles[i].requiredShape == Shape.CUBE)
+				{
+					blueObstacles[i].sphereImage.SetActive(false);
+					blueObstacles[i].cubeImage.SetActive(true);
+				}
+				else
+				{
+					blueObstacles[i].sphereImage.SetActive(true);
+					blueObstacles[i].cubeImage.SetActive(false);
+				}
 			}
 		}
 		else
@@ -66,6 +77,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 			for (int i = 0; i < redObstacles.Count; i++)
 			{
 				redObstacles[i].requiredShape = (Shape)Random.Range(0, 2);
+				if (redObstacles[i].requiredShape == Shape.CUBE)
+				{
+					redObstacles[i].sphereImage.SetActive(false);
+					redObstacles[i].cubeImage.SetActive(true);
+				}
+				else
+				{
+					redObstacles[i].sphereImage.SetActive(true);
+					redObstacles[i].cubeImage.SetActive(false);
+				}
 			}
 		}
 	}
@@ -79,6 +100,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 			localPlayer.GetComponent<PhotonView>().RPC("FinishGame", RpcTarget.All, starsCollected, otherPlayerStarsCollected);
 			Debug.Log($"GAME COMPLETE! Master: {starsCollected}, Other: {otherPlayerStarsCollected}");
 		}
+	}
+
+	public void ReturnToLobby()
+	{
+		PhotonNetwork.LeaveRoom();
+		SceneManager.LoadScene(0);
 	}
 
 	public override void OnPlayerLeftRoom(Player otherPlayer)

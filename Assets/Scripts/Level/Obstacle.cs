@@ -13,6 +13,7 @@ public enum Shape
 public class Obstacle : MonoBehaviour
 {
 	public Shape requiredShape = Shape.SPHERE;
+	public GameObject cubeImage, sphereImage;
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -20,6 +21,7 @@ public class Obstacle : MonoBehaviour
 		{
 			if (other.gameObject.GetComponentInParent<PlayerController>().currentShape != requiredShape)
 			{
+				other.gameObject.GetComponentInParent<PlayerController>().hitParticles.Play();
 				GameManager.Instance.starsCollected -= 3;
 			}
 		}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Photon.Pun;
@@ -11,6 +12,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 	#region Serialized Attributes
 	[SerializeField] private GameObject joiningPanel, waitingPanel;
 	[SerializeField] private TMP_InputField nameInput;
+	[SerializeField] private Button playButton;
+	[SerializeField] private TextMeshProUGUI connectingText;
 	#endregion
 
 	void Awake()
@@ -22,7 +25,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		string savedPlayerName = PlayerPrefs.GetString("PlayerName", "");
 		nameInput.text = savedPlayerName;
+		playButton.interactable = false;
+		connectingText.gameObject.SetActive(true);
+		PhotonNetwork.ConnectUsingSettings();
 	}
+
 	public void JoinRoom()
 	{
 		if (nameInput.text.Length <= 0) return;
@@ -38,16 +45,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			PhotonNetwork.JoinRandomRoom();
 		}
-		else
-		{
-			PhotonNetwork.ConnectUsingSettings();
-		}
 	}
 
 	public override void OnConnectedToMaster()
 	{
 		Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-		PhotonNetwork.JoinRandomRoom();
+		playButton.interactable = true;
+		connectingText.gameObject.SetActive(false);
 	}
 
 	public override void OnDisconnected(DisconnectCause cause)

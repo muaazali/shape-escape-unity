@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Camera playerCamera;
 	[SerializeField] private GameObject cubeShape, sphereShape;
 	[SerializeField] private TextMeshProUGUI playerName;
+	public ParticleSystem starPickupParticles, hitParticles;
 
 	[Header("Positioning")]
 	[SerializeField] private float laneSeparation = 3f;
