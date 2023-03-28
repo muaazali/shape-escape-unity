@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	public void ReturnToLobby()
 	{
+		AudioManager.Instance.PlayButtonClickSound();
 		PhotonNetwork.LeaveRoom();
 		SceneManager.LoadScene(0);
 	}

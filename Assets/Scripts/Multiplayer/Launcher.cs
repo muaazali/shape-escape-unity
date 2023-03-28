@@ -40,6 +40,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void Connect()
 	{
+		AudioManager.Instance.PlayButtonClickSound();
 		joiningPanel.SetActive(true);
 		if (PhotonNetwork.IsConnected)
 		{

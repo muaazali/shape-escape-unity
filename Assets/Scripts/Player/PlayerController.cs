@@ -130,5 +130,6 @@ public class PlayerController : MonoBehaviour
 		GameManager.Instance.masterScore.text = masterStars.ToString();
 		GameManager.Instance.otherScore.text = otherStars.ToString();
 		GameManager.Instance.gameFinishedUI.SetActive(true);
+		AudioManager.Instance.PlayGameFinishedSound();
 	}
 }

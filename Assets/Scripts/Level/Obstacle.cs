@@ -21,8 +21,9 @@ public class Obstacle : MonoBehaviour
 		{
 			if (other.gameObject.GetComponentInParent<PlayerController>().currentShape != requiredShape)
 			{
+				AudioManager.Instance.PlayWallHitSound();
 				other.gameObject.GetComponentInParent<PlayerController>().hitParticles.Play();
-				GameManager.Instance.starsCollected -= 3;
+				GameManager.Instance.starsCollected -= 10;
 				GameManager.Instance.starCountUI.text = GameManager.Instance.starsCollected.ToString();
 			}
 		}
