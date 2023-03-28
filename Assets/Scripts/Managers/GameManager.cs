@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 	[SerializeField] private List<PhotonView> redStarSets, blueStarSets;
 	[SerializeField] private List<Obstacle> redObstacles, blueObstacles;
 
+	public TextMeshProUGUI starCountUI;
+
 	[Header("Game Finished UI")]
 	[SerializeField] public GameObject gameFinishedUI;
 	[SerializeField] public TextMeshProUGUI yourStatus;

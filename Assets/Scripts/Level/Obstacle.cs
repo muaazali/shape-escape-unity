@@ -23,6 +23,7 @@ public class Obstacle : MonoBehaviour
 			{
 				other.gameObject.GetComponentInParent<PlayerController>().hitParticles.Play();
 				GameManager.Instance.starsCollected -= 3;
+				GameManager.Instance.starCountUI.text = GameManager.Instance.starsCollected.ToString();
 			}
 		}
 

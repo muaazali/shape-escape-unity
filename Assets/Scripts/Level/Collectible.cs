@@ -17,6 +17,7 @@ public class Collectible : MonoBehaviour
 		if (other.gameObject.GetComponentInParent<PhotonView>().IsMine)
 		{
 			GameManager.Instance.starsCollected++;
+			GameManager.Instance.starCountUI.text = GameManager.Instance.starsCollected.ToString();
 			other.gameObject.GetComponentInParent<PlayerController>().starPickupParticles.Play();
 		}
 		Destroy(this.gameObject);
